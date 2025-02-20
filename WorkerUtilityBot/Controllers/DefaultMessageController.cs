@@ -15,6 +15,6 @@ class DefaultMessageController
     public async Task Handle(Message message, CancellationToken cancellationToken)
     {
         Console.WriteLine($"Контроллер {GetType().Name} получил сообщение");
-        await _telegramBotClient.SendMessage(message.Chat.Id, $"Получено сообщение не поддерживаемого формата", cancellationToken: cancellationToken)
+        await _telegramBotClient.SendMessage(message.Chat.Id, $"Получено сообщение не поддерживаемого формата", cancellationToken: cancellationToken);
     }
 }

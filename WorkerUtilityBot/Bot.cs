@@ -4,6 +4,7 @@ using Telegram.Bot.Exceptions;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
+using WorkerUtilityBot.Controllers;
 
 namespace WorkerUtilityBot;
 
@@ -12,9 +13,22 @@ class Bot : BackgroundService
     // Клиент к Telegram Bot API
     private ITelegramBotClient _telegramBotClient;
 
-    public Bot(ITelegramBotClient telegramBotClient)
+    // Контроллеры различных видов сообщений
+    private DefaultMessageController _defaultMessageController;
+    private InlineKeyboardController _inlineKeyboardController;
+    private TextMessageController _textMessageController;
+
+
+    public Bot(
+        ITelegramBotClient telegramBotClient,
+        DefaultMessageController defaultMessageController,
+        InlineKeyboardController inlineKeyboardController,
+        TextMessageController textMessageController)
     {
         _telegramBotClient = telegramBotClient;
+        _defaultMessageController = defaultMessageController;
+        _inlineKeyboardController = inlineKeyboardController;
+        _textMessageController = textMessageController;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -30,7 +44,7 @@ class Bot : BackgroundService
 
     async Task HandleUpdareAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
     {
-        //  Обрабатываем нажатия на кнопки  из Telegram Bot API: https://core.telegram.org/bots/api#callbackquery
+        //  Обрабатываем нажатия на кнопки из Telegram Bot API: https://core.telegram.org/bots/api#callbackquery
         if (update.Type == UpdateType.CallbackQuery)
         {
             await _inlineKeyboardController.Handle(update.CallbackQuery, cancellationToken);
@@ -43,7 +57,7 @@ class Bot : BackgroundService
             switch (update.Message.Type)
             {
                 case MessageType.Text:
-                    await _textMessageController.Handle(update.Message, cancellationToken);
+                    await _textMessageController.Handle(update.Message, _inlineKeyboardController.Operation, cancellationToken);
                     return;
 
                 default:
@@ -68,7 +82,7 @@ class Bot : BackgroundService
 
         // Задержка перед повторным подключением
         Console.WriteLine("Ожидаем 10 секунд перед повторным подключением.");
-        Thread.Sleep(10000);
+        Thread.Sleep(1000);
 
         return Task.CompletedTask;
     }

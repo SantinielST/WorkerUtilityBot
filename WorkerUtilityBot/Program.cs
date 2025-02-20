@@ -3,6 +3,7 @@ using Microsoft.Extensions.Hosting;
 using System.Text;
 using Telegram.Bot;
 using WorkerUtilityBot.Configuration;
+using WorkerUtilityBot.Controllers;
 
 namespace WorkerUtilityBot;
 
@@ -30,6 +31,11 @@ internal class Program
         AppSettings appSettings = BuildAppSettings();
         services.AddSingleton(appSettings);
 
+        // Подключаем контроллеры сообщений и кнопок
+        services.AddTransient<DefaultMessageController>();
+        services.AddTransient<TextMessageController>();
+        services.AddTransient<InlineKeyboardController>();
+
         // Регистрируем объект TelegramBotClient c токеном подключения
         services.AddSingleton<ITelegramBotClient>(provider => new TelegramBotClient(appSettings.BotToken));
 
@@ -41,7 +47,7 @@ internal class Program
     {
         return new AppSettings()
         {
-            BotToken = ""
+            BotToken = "7881911429:AAGqqcTdW6uBbJ2cvi3t66XMNSCSgQMcJDE"
         };
     }
 }
