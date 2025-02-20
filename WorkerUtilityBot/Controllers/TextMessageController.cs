@@ -17,7 +17,7 @@ class TextMessageController
         numbersCalculator = new(_telegramBotClient);
     }
 
-    public async Task Handle(Message message, string opteration, CancellationToken cancellationToken)
+    public async Task Handle(Message message, string operation, CancellationToken cancellationToken)
     {
         string input = message.Text;
 
@@ -44,12 +44,12 @@ class TextMessageController
                 break;
         }
 
-        if (!string.IsNullOrEmpty(opteration) && opteration == "countSymbols" && message.Text != "/start") // Проверяем выбранную операцию
+        if (!string.IsNullOrEmpty(operation) && operation == "countSymbols" && message.Text != "/start") // Проверяем выбранную операцию
         {
             // Подсчитываем количество символов в тексте
             await _telegramBotClient.SendMessage(message.Chat.Id, $"Длина сообщения: {message.Text.Length} знаков", cancellationToken: cancellationToken);
         }
-        else if (!string.IsNullOrEmpty(opteration) && opteration == "sumNumbers" && message.Text != "/start")  // Проверяем выбранную операцию
+        else if (!string.IsNullOrEmpty(operation) && operation == "sumNumbers" && message.Text != "/start")  // Проверяем выбранную операцию
         {
             var result = numbersCalculator.CalculateNumbers(message, cancellationToken); // Отправляем в работу сообщение с числами
 

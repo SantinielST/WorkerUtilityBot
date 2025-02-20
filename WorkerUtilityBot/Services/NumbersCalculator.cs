@@ -27,7 +27,7 @@ class NumbersCalculator : INumbersCalculator
 	{
 		try
 		{
-			var result = message.Text.Split(' ').Select(int.Parse).Sum();
+			var result = message.Text.Trim().Split(' ').Select(int.Parse).Sum();
 
 			return result;
 		}

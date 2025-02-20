@@ -38,6 +38,11 @@ class InlineKeyboardController
 
         Operation = callbackQuery.Data;
 
+        if (Operation == "sumNumbers")
+        {
+            await _telegramBotClient.SendMessage(callbackQuery.From.Id, "Введите числа через пробел:", cancellationToken: cancellationToken);
+        }
+
         Console.WriteLine($"Контроллер {GetType().Name} получил сообщение {callbackQuery.From.Username}");
     }
 }
