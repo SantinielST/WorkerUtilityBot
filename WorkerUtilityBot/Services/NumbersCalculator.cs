@@ -16,7 +16,6 @@ class NumbersCalculator : INumbersCalculator
 		_telegramBotClient = telegramBotClient;
     }
 
-
     /// <summary>
     /// Метод разбивает строку на отдельные числа, проверяется строку на корректность данных.
     /// </summary>
